@@ -1,8 +1,9 @@
 import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 import configuration from './config/configuration';
-import { DatabaseModule } from './database/database.module';
 import { UsersModule } from './users/users.module';
+import { TypeOrmModule } from '@nestjs/typeorm';
+import { typeOrmAsyncConfig } from './database/database.config';
 
 @Module({
   imports: [
@@ -10,7 +11,7 @@ import { UsersModule } from './users/users.module';
       isGlobal: true,
       load: [configuration],
     }),
-    DatabaseModule,
+    TypeOrmModule.forRootAsync(typeOrmAsyncConfig),
     UsersModule,
   ],
 })

@@ -1,7 +1,7 @@
 export interface User {
   id: number;
   name: string;
-  phoneNumber: number;
+  phoneNumber: string;
   password: string;
   createdAt: Date;
 }
@@ -15,8 +15,8 @@ export interface RegisterUser {
 export interface UserResponse {
   id: number;
   name: string;
-  phoneNumber: number;
-  createdAt: number;
+  phoneNumber: string;
+  createdAt: Date;
 }
 
 export interface AuthUserResponse extends UserResponse {
