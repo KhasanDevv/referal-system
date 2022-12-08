@@ -4,6 +4,7 @@ import {
   ApiBody,
   ApiUnauthorizedResponse,
   ApiOkResponse,
+  ApiTags,
 } from '@nestjs/swagger';
 import { UsersService } from './services/users.service';
 import { RegisterUserDto } from './dto/register-user.dto';
@@ -14,6 +15,7 @@ export class UsersController {
   constructor(private userService: UsersService) {}
 
   @Post('/register')
+  @ApiTags('Users')
   @ApiCreatedResponse({ description: 'user auth response' })
   @ApiBody({ type: RegisterUserDto })
   async register(@Body(ValidationPipe) credentials: RegisterUserDto) {
@@ -23,6 +25,7 @@ export class UsersController {
   }
 
   @Post('/login')
+  @ApiTags('Users')
   @ApiOkResponse({ description: 'User Login' })
   @ApiUnauthorizedResponse({ description: 'Invalid credentials' })
   @ApiBody({ type: LoginUserDto })
