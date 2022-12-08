@@ -1,5 +1,4 @@
 import { ConfigService } from '@nestjs/config';
-import { UserEntity } from '../users/user.entity';
 import {
   TypeOrmModuleAsyncOptions,
   TypeOrmModuleOptions,
@@ -16,8 +15,16 @@ export const typeOrmAsyncConfig: TypeOrmModuleAsyncOptions = {
       password: config.get('database.password'),
       database: config.get('database.name'),
       entities: [__dirname + '/../**/*.entity{.ts,.js}'],
-      // entities: [UserEntity],
       synchronize: true,
     };
   },
+};
+export const typeOrmConfig: TypeOrmModuleOptions = {
+  type: 'postgres',
+  database: 'db.postgres',
+  synchronize: false,
+  entities: [__dirname + '/../entities/*.entity.{js,ts}'],
+  migrations: [__dirname + '/../database/*{.ts,.js}'],
+  logging: false,
+  autoLoadEntities: true,
 };

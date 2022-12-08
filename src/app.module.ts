@@ -3,7 +3,7 @@ import { ConfigModule } from '@nestjs/config';
 import configuration from './config/configuration';
 import { UsersModule } from './users/users.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { typeOrmAsyncConfig } from './database/database.config';
+import { typeOrmAsyncConfig } from './config/typeorm.config';
 import { AdminModule } from './admin/admin.module';
 
 @Module({
