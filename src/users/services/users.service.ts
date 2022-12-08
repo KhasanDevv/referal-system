@@ -30,7 +30,7 @@ export class UsersService {
     const user = (await this.userRepo
       .save(userEntity)
       .catch(UserPostgresErrors.phoneNumberAlreadyExist)) as UserEntity;
-    const payload = { id: user.id };
+    const payload = { id: user.id, type: 'user' };
     const token = this.jwtService.sign(payload);
     const userVeil = new UserVeil(user);
     return {
@@ -56,7 +56,7 @@ export class UsersService {
     if (!isValid) {
       throw new UnauthorizedException('Invalid password');
     }
-    const token = this.jwtService.sign({ id: user.id });
+    const token = this.jwtService.sign({ id: user.id, type: 'user' });
     const userVeil = new UserVeil(user);
     return {
       ...userVeil,
