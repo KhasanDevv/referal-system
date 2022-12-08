@@ -5,6 +5,7 @@ import { UsersModule } from './users/users.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { typeOrmAsyncConfig } from './config/typeorm.config';
 import { AdminModule } from './admin/admin.module';
+import { MarketModule } from './market/market.module';
 
 @Module({
   imports: [
@@ -15,6 +16,7 @@ import { AdminModule } from './admin/admin.module';
     TypeOrmModule.forRootAsync(typeOrmAsyncConfig),
     AdminModule,
     UsersModule,
+    MarketModule,
   ],
 })
 export class AppModule {}
