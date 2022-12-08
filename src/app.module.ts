@@ -13,8 +13,8 @@ import { AdminModule } from './admin/admin.module';
       load: [configuration],
     }),
     TypeOrmModule.forRootAsync(typeOrmAsyncConfig),
-    UsersModule,
     AdminModule,
+    UsersModule,
   ],
 })
 export class AppModule {}
