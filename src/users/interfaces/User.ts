@@ -12,6 +12,11 @@ export interface RegisterUser {
   password: string;
 }
 
+export interface LoginUser {
+  phoneNumber: string;
+  password: string;
+}
+
 export interface UserResponse {
   id: number;
   name: string;
