@@ -15,7 +15,7 @@ export class MarketEntity implements Market {
   @Column()
   name: string;
 
-  @OneToMany((type) => MarketLevelsEntity, (market) => market.market)
+  @OneToMany((type) => MarketLevelsEntity, (level) => level.market)
   levels: MarketLevels[];
 }
 
@@ -23,7 +23,7 @@ export class MarketEntity implements Market {
 export class MarketLevelsEntity implements MarketLevels {
   @PrimaryGeneratedColumn()
   id: number;
-  @ManyToOne((type) => MarketEntity, (market) => market)
+  @ManyToOne((type) => MarketEntity, (market) => market.levels)
   market: Market;
 
   @Column({ type: 'smallint' })

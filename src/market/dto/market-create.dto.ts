@@ -1,10 +1,32 @@
-import { IsString, MinLength } from 'class-validator';
+import {
+  IsArray,
+  IsNumber,
+  IsString,
+  Max,
+  Min,
+  MinLength,
+  ValidateNested,
+} from 'class-validator';
 import { ApiProperty } from '@nestjs/swagger';
-import { CreateMarket } from '../interfaces/Market';
+import { Type } from 'class-transformer';
 
-export class MarketCreateDto implements CreateMarket {
+class CreateMarketLevel {
+  @ApiProperty()
+  @IsNumber()
+  @Min(1)
+  @Max(100)
+  percentage: number;
+}
+
+export class MarketCreateDto {
   @ApiProperty()
   @IsString()
   @MinLength(3)
   name: string;
+
+  @ApiProperty({ type: [CreateMarketLevel] })
+  @IsArray()
+  @ValidateNested({ each: true })
+  @Type(() => CreateMarketLevel)
+  levels: CreateMarketLevel[];
 }
