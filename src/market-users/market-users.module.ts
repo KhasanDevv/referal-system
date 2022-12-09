@@ -5,12 +5,13 @@ import { MarketUserEntity } from './market-user.entity';
 import { MarketUsersController } from './market-users.controller';
 import { MarketEntity } from '../market/market.entity';
 import { UserEntity } from '../users/user.entity';
+import { PasswordService } from '../users/services/password.service';
 
 @Module({
   imports: [
     TypeOrmModule.forFeature([MarketUserEntity, MarketEntity, UserEntity]),
   ],
-  providers: [MarketUsersService],
+  providers: [MarketUsersService, PasswordService],
   controllers: [MarketUsersController],
 })
 export class MarketUsersModule {}

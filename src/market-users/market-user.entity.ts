@@ -1,10 +1,4 @@
-import {
-  Column,
-  PrimaryGeneratedColumn,
-  Entity,
-  ManyToOne,
-  OneToOne,
-} from 'typeorm';
+import { Column, PrimaryGeneratedColumn, Entity, ManyToOne } from 'typeorm';
 import { MarketUsers } from './interfaces/MarketUsers';
 import { MarketEntity } from '../market/market.entity';
 import { Market } from '../market/interfaces/Market';
@@ -19,10 +13,10 @@ export class MarketUserEntity implements MarketUsers {
   @ManyToOne((type) => MarketEntity, (market) => market.users)
   market: Market;
 
-  @OneToOne((type) => UserEntity, (user) => user.id)
+  @ManyToOne((type) => UserEntity, (user) => user.markets)
   user: User;
 
-  @OneToOne((type) => UserEntity, (user) => user.id)
+  @ManyToOne((type) => UserEntity, (user) => user.referrals)
   referral: User;
 
   @Column({ default: 0 })

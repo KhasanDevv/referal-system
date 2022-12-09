@@ -5,6 +5,9 @@ import { MarketEntity } from '../market/market.entity';
 import { MarketUserEntity } from './market-user.entity';
 import { UserEntity } from '../users/user.entity';
 import { CreateMarketUserDto } from './dto/create-market-user.dto';
+import { CreateUserWithMarketDto } from './dto/create-user-with-market.dto';
+import { PasswordService } from '../users/services/password.service';
+import { UserPostgresErrors } from '../users/user.postgres-errors';
 
 @Injectable()
 export class MarketUsersService {
@@ -14,6 +17,7 @@ export class MarketUsersService {
     @InjectRepository(MarketEntity)
     private marketRepo: Repository<MarketEntity>,
     @InjectRepository(UserEntity) private userRepo: Repository<UserEntity>,
+    private passwordService: PasswordService,
   ) {}
 
   async create(credentials: CreateMarketUserDto) {
@@ -54,5 +58,34 @@ export class MarketUsersService {
     return {
       marketUser,
     };
+  }
+
+  async createUserWithUser(credentials: CreateUserWithMarketDto) {
+    const user = await this.userRepo.create({
+      name: credentials.name,
+      phoneNumber: credentials.phoneNumber,
+      password: await this.passwordService.hashPassword(credentials.password),
+    });
+
+    await this.userRepo
+      .save(user)
+      .catch(UserPostgresErrors.phoneNumberAlreadyExist);
+
+    const market = await this.marketRepo.findOne({
+      where: { id: credentials.marketId },
+    });
+    if (!market) {
+      throw new NotFoundException(
+        `This ${credentials.marketId} market not found!`,
+      );
+    }
+
+    const marketUser = await this.marketUserRepo.create();
+    marketUser.market = market;
+    marketUser.user = user;
+
+    await this.marketUserRepo.save(marketUser);
+
+    return { user, marketUser };
   }
 }
