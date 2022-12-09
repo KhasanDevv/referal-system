@@ -27,3 +27,8 @@ export interface UserResponse {
 export interface AuthUserResponse extends UserResponse {
   token: string;
 }
+
+export class AuthPayload {
+  id: number;
+  type: string;
+}

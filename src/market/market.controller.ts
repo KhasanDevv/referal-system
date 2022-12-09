@@ -1,5 +1,13 @@
-import { Body, Controller, Get, Post, ValidationPipe } from '@nestjs/common';
 import {
+  Body,
+  Controller,
+  Get,
+  Post,
+  UseGuards,
+  ValidationPipe,
+} from '@nestjs/common';
+import {
+  ApiBearerAuth,
   ApiBody,
   ApiCreatedResponse,
   ApiOkResponse,
@@ -7,6 +15,7 @@ import {
 } from '@nestjs/swagger';
 import { MarketCreateDto } from './dto/market-create.dto';
 import { MarketService } from './market.service';
+import { JwtAdminAuthGuard } from '../admin/admin-jwt.guard';
 
 @Controller('market')
 export class MarketController {
@@ -24,6 +33,8 @@ export class MarketController {
   @Get()
   @ApiTags('Market')
   @ApiOkResponse({ description: 'Get Markets' })
+  @ApiBearerAuth()
+  @UseGuards(JwtAdminAuthGuard)
   async find() {
     const data = this.marketService.find();
     return data;

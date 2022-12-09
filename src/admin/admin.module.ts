@@ -5,6 +5,7 @@ import { AdminService } from './admin.service';
 import { PasswordService } from '../users/services/password.service';
 import { JwtModule } from '@nestjs/jwt';
 import { AdminController } from './admin.controller';
+import { JwtStrategy } from './jwt-admin.strategy';
 
 @Module({
   imports: [
@@ -16,7 +17,7 @@ import { AdminController } from './admin.controller';
       },
     }),
   ],
-  providers: [AdminService, PasswordService],
+  providers: [AdminService, PasswordService, JwtStrategy],
   controllers: [AdminController],
 })
 export class AdminModule {}
