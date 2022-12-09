@@ -11,6 +11,11 @@ export interface MarketLevels {
   percentage: number;
 }
 
+export class CreateMarketLevel {
+  percentage: number;
+}
+
 export interface CreateMarket {
   name: string;
+  levels: CreateMarketLevel[];
 }

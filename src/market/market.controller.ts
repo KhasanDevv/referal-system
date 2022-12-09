@@ -8,7 +8,7 @@ export class MarketController {
   constructor(private marketService: MarketService) {}
   @Post()
   @ApiTags('Market')
-  @ApiCreatedResponse()
+  @ApiCreatedResponse({ description: 'Api Created responses' })
   @ApiBody({ type: MarketCreateDto })
   async create(@Body(ValidationPipe) credentials: MarketCreateDto) {
     const market = await this.marketService.createMarket(credentials);
