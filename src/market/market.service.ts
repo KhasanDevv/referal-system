@@ -3,6 +3,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { MarketEntity, MarketLevelsEntity } from './market.entity';
 import { Repository } from 'typeorm';
 import { MarketCreateDto } from './dto/market-create.dto';
+import { MarketResponse } from './interfaces/Market';
 
 @Injectable()
 export class MarketService {
@@ -13,7 +14,7 @@ export class MarketService {
     private marketLevelRepo: Repository<MarketLevelsEntity>,
   ) {}
 
-  async createMarket(credentials: MarketCreateDto): Promise<any> {
+  async createMarket(credentials: MarketCreateDto): Promise<MarketResponse> {
     const marketEntity = this.marketRepo.create(credentials);
     const market = await this.marketRepo.save(marketEntity);
     let counter = 1;
@@ -30,5 +31,10 @@ export class MarketService {
       counter++;
     }
     return { ...marketEntity, levels };
+  }
+
+  async find(): Promise<any> {
+    const markets = await this.marketRepo.find({ relations: ['levels'] });
+    return { markets };
   }
 }
