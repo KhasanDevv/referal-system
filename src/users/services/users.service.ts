@@ -44,7 +44,7 @@ export class UsersService {
     password,
   }: LoginUserDto): Promise<AuthUserResponse> {
     const user = await this.userRepo.findOne({
-      where: { phoneNumber: phoneNumber },
+      where: { phoneNumber: phoneNumber.replace('+', '') },
     });
     if (!user) {
       throw new NotFoundException('Phone number not registered!');
