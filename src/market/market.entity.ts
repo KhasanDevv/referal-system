@@ -6,6 +6,8 @@ import {
   ManyToOne,
 } from 'typeorm';
 import { Market, MarketLevels } from './interfaces/Market';
+import { MarketUsers } from '../market-users/interfaces/MarketUsers';
+import { MarketUserEntity } from '../market-users/market-user.entity';
 
 @Entity('markets')
 export class MarketEntity implements Market {
@@ -17,6 +19,9 @@ export class MarketEntity implements Market {
 
   @OneToMany((type) => MarketLevelsEntity, (level) => level.market)
   levels: MarketLevels[];
+
+  @OneToMany((type) => MarketUserEntity, (marketUser) => marketUser.market)
+  users: MarketUsers[];
 }
 
 @Entity('market_levels')
