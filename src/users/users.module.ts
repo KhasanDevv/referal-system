@@ -6,17 +6,10 @@ import { UserEntity } from './user.entity';
 import { JwtModule } from '@nestjs/jwt';
 import { PasswordService } from './services/password.service';
 import { JwtStrategy } from './jwt.strategy';
+import { JwtConfig } from '../config/jwt.config';
 
 @Module({
-  imports: [
-    TypeOrmModule.forFeature([UserEntity]),
-    JwtModule.register({
-      secret: 'Hello',
-      signOptions: {
-        expiresIn: 3600,
-      },
-    }),
-  ],
+  imports: [TypeOrmModule.forFeature([UserEntity]), JwtConfig],
   providers: [UsersService, PasswordService, JwtStrategy],
   controllers: [UsersController],
 })
