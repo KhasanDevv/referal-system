@@ -1,8 +1,12 @@
 import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 import configuration from './config/configuration';
-import { DatabaseModule } from './database/database.module';
 import { UsersModule } from './users/users.module';
+import { TypeOrmModule } from '@nestjs/typeorm';
+import { typeOrmAsyncConfig } from './config/typeorm.config';
+import { AdminModule } from './admin/admin.module';
+import { MarketModule } from './market/market.module';
+import { MarketUsersModule } from './market-users/market-users.module';
 
 @Module({
   imports: [
@@ -10,8 +14,11 @@ import { UsersModule } from './users/users.module';
       isGlobal: true,
       load: [configuration],
     }),
-    DatabaseModule,
+    TypeOrmModule.forRootAsync(typeOrmAsyncConfig),
+    AdminModule,
     UsersModule,
+    MarketModule,
+    MarketUsersModule,
   ],
 })
 export class AppModule {}
