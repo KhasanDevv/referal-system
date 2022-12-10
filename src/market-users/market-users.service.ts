@@ -1,4 +1,8 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import {
+  BadRequestException,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { MarketEntity } from '../market/market.entity';
@@ -9,6 +13,7 @@ import { CreateUserWithMarketDto } from './dto/create-user-with-market.dto';
 import { PasswordService } from '../users/services/password.service';
 import { UserPostgresErrors } from '../users/user.postgres-errors';
 import { MarketUserVeil } from './market-user.veil';
+import { CreateUserOrderDto } from './dto/create-user-order.dto';
 
 @Injectable()
 export class MarketUsersService {
@@ -88,5 +93,58 @@ export class MarketUsersService {
     await this.marketUserRepo.save(marketUser);
     const marketUserVeil = new MarketUserVeil(marketUser);
     return { marketUser: marketUserVeil };
+  }
+
+  async createOrder(credentials: CreateUserOrderDto) {
+    const market = await this.marketRepo.findOne({
+      where: { id: credentials.marketId },
+      relations: ['levels'],
+    });
+    if (!market) {
+      throw new NotFoundException(
+        `This ${credentials.marketId} market not found!`,
+      );
+    }
+    let user = await this.marketUserRepo.findOne({
+      where: {
+        user: { id: credentials.userId },
+        market: { id: credentials.marketId },
+      },
+      relations: ['user', 'referral'],
+    });
+
+    if (!user) {
+      throw new BadRequestException(
+        `This ${credentials.userId} not registered this market!`,
+      );
+    }
+    const resultUsers = [];
+    for (const level of market.levels) {
+      if (!user.referral) {
+        break;
+      }
+      const cashBack = (
+        (credentials.orderPrice / 100) *
+        level.percentage
+      ).toFixed(2);
+      user = await this.marketUserRepo.findOne({
+        where: { market: { id: market.id }, user: { id: user.referral.id } },
+        relations: ['user', 'referral'],
+      });
+      user.cashBack = parseInt(cashBack, 10);
+      resultUsers.push(user);
+      await this.marketUserRepo.save(user);
+    }
+
+    return {
+      users: resultUsers,
+    };
+  }
+
+  async getMarketUsers() {
+    const markets = await this.marketRepo.find({
+      relations: ['users.user'],
+    });
+    return markets;
   }
 }

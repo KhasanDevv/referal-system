@@ -1,7 +1,17 @@
 import { Body, Controller, Post, ValidationPipe } from '@nestjs/common';
 import { AdminService } from './admin.service';
-import { ApiBody, ApiOkResponse, ApiTags } from '@nestjs/swagger';
-import { LoginAdminDto } from './dto/login-admin.dto';
+import {
+  ApiBadRequestResponse,
+  ApiBody,
+  ApiInternalServerErrorResponse,
+  ApiNotFoundResponse,
+  ApiOkResponse,
+  ApiTags,
+} from '@nestjs/swagger';
+import { AdminResponseDto, LoginAdminDto } from './dto/login-admin.dto';
+import { ValidationErrorResponse } from '../errors/validation-error';
+import { ServerErrorResponse } from '../errors/server-error';
+import { NotFoundErrorResponse } from '../errors/not-found-error';
 
 @Controller('admin')
 export class AdminController {
@@ -9,7 +19,22 @@ export class AdminController {
 
   @Post('/login')
   @ApiTags('Admin')
-  @ApiOkResponse({ description: 'Admin login response!' })
+  @ApiOkResponse({
+    description: 'Admin login response!',
+    type: AdminResponseDto,
+  })
+  @ApiBadRequestResponse({
+    description: 'validation error',
+    type: ValidationErrorResponse,
+  })
+  @ApiInternalServerErrorResponse({
+    description: 'Server error',
+    type: ServerErrorResponse,
+  })
+  @ApiNotFoundResponse({
+    description: 'Not found!',
+    type: NotFoundErrorResponse,
+  })
   @ApiBody({ type: LoginAdminDto })
   async login(@Body(ValidationPipe) credentials: LoginAdminDto) {
     const admin = await this.adminService.login(credentials);

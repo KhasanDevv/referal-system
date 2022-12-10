@@ -13,6 +13,8 @@ export class MarketUserVeil implements MarketUsersResponse {
     this.id = marketUser.id;
     this.market = marketUser.market;
     this.user = new UserVeil(marketUser.user);
-    this.referral = new UserVeil(marketUser.referral);
+    if (marketUser.referral) {
+      this.referral = new UserVeil(marketUser.referral);
+    }
   }
 }

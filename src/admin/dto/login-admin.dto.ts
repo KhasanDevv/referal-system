@@ -1,6 +1,6 @@
 import { IsString } from 'class-validator';
 import { ApiProperty } from '@nestjs/swagger';
-import { LoginAdmin } from '../interfaces/Admin';
+import { AdminResponse, LoginAdmin } from '../interfaces/Admin';
 
 export class LoginAdminDto implements LoginAdmin {
   @ApiProperty()
@@ -10,4 +10,15 @@ export class LoginAdminDto implements LoginAdmin {
   @ApiProperty()
   @IsString()
   password: string;
+}
+
+export class AdminResponseDto implements AdminResponse {
+  @ApiProperty()
+  id: number;
+
+  @ApiProperty()
+  username: string;
+
+  @ApiProperty()
+  createdAt: Date;
 }
