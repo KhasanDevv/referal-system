@@ -53,9 +53,27 @@ export class MarketUsersService {
           `This ${credentials.userId} referral user not found!`,
         );
       }
+
+      const isSubscribed = await this.marketUserRepo.findOne({
+        where: { market: { id: market.id }, user: { id: referralUser.id } },
+      });
+
+      if (!isSubscribed) {
+        throw new BadRequestException(
+          'The referral user not subscribed the market!',
+        );
+      }
     }
 
-    const marketUser = await this.marketUserRepo.create();
+    let marketUser = await this.marketUserRepo.findOne({
+      where: { market: { id: market.id }, user: { id: user.id } },
+    });
+
+    if (marketUser) {
+      throw new BadRequestException('The user already subscribed!');
+    }
+
+    marketUser = await this.marketUserRepo.create();
     marketUser.market = market;
     marketUser.user = user;
     marketUser.referral = referralUser;
