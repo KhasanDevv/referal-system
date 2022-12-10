@@ -33,9 +33,4 @@ export class UserEntity implements User {
 
   @OneToMany((type) => MarketUserEntity, (marketUser) => marketUser.referral)
   referrals: MarketUsers[];
-
-  @BeforeInsert()
-  async hashPassword() {
-    this.password = await bcrypt.hash(this.password, 10);
-  }
 }

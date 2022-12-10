@@ -25,6 +25,7 @@ export class MarketController {
   @ApiTags('Market')
   @ApiCreatedResponse({ description: 'Api Created responses' })
   @ApiBody({ type: MarketCreateDto })
+  @UseGuards(JwtAdminAuthGuard)
   async create(@Body(ValidationPipe) credentials: MarketCreateDto) {
     const market = await this.marketService.createMarket(credentials);
     return { market };

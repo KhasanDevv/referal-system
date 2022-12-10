@@ -23,8 +23,12 @@ export class UsersService {
   ) {}
 
   async register(credentials: RegisterUserDto): Promise<AuthUserResponse> {
+    const passwordHash = await this.passwordService.hashPassword(
+      credentials.password,
+    );
     const userEntity = this.userRepo.create({
-      ...credentials,
+      name: credentials.name,
+      password: passwordHash,
       phoneNumber: credentials.phoneNumber.replace('+', ''),
     });
     const user = (await this.userRepo

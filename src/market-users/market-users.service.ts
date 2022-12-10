@@ -8,6 +8,7 @@ import { CreateMarketUserDto } from './dto/create-market-user.dto';
 import { CreateUserWithMarketDto } from './dto/create-user-with-market.dto';
 import { PasswordService } from '../users/services/password.service';
 import { UserPostgresErrors } from '../users/user.postgres-errors';
+import { MarketUserVeil } from './market-user.veil';
 
 @Injectable()
 export class MarketUsersService {
@@ -54,9 +55,9 @@ export class MarketUsersService {
     marketUser.user = user;
     marketUser.referral = referralUser;
     await this.marketUserRepo.save(marketUser);
-
+    const marketUserVeil = new MarketUserVeil(marketUser);
     return {
-      marketUser,
+      marketUser: marketUserVeil,
     };
   }
 
@@ -85,7 +86,7 @@ export class MarketUsersService {
     marketUser.user = user;
 
     await this.marketUserRepo.save(marketUser);
-
-    return { user, marketUser };
+    const marketUserVeil = new MarketUserVeil(marketUser);
+    return { marketUser: marketUserVeil };
   }
 }
