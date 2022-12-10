@@ -27,15 +27,14 @@ export class AdminController {
     description: 'validation error',
     type: ValidationErrorResponse,
   })
-  @ApiInternalServerErrorResponse({
-    description: 'Server error',
-    type: ServerErrorResponse,
-  })
   @ApiNotFoundResponse({
     description: 'Not found!',
     type: NotFoundErrorResponse,
   })
-  @ApiBody({ type: LoginAdminDto })
+  @ApiInternalServerErrorResponse({
+    description: 'Server error',
+    type: ServerErrorResponse,
+  })
   async login(@Body(ValidationPipe) credentials: LoginAdminDto) {
     const admin = await this.adminService.login(credentials);
     const data = { admin };

@@ -30,3 +30,24 @@ export class MarketCreateDto {
   @Type(() => CreateMarketLevel)
   levels: CreateMarketLevel[];
 }
+
+class LevelResponse {
+  @ApiProperty()
+  id: string;
+
+  @ApiProperty()
+  level: number;
+
+  @ApiProperty()
+  percentage: number;
+}
+export class MarketResponseDto {
+  @ApiProperty()
+  id: string;
+
+  @ApiProperty()
+  name: string;
+
+  @ApiProperty()
+  level: LevelResponse;
+}
