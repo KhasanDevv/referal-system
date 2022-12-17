@@ -5,7 +5,8 @@ export function createDocument(app: INestApplication): OpenAPIObject {
   const builder = new DocumentBuilder()
     .setDescription('Testing App API')
     .setTitle('Testing App API')
-    .setVersion('1.0');
+    .setVersion('1.0')
+    .addBearerAuth();
 
   const options = builder.build();
   return SwaggerModule.createDocument(app, options);
