@@ -33,4 +33,27 @@ jobs:
       
     - name: Start project
       run: npm start
-      
+  lint:
+    name: Run linters
+    runs-on: self-hosted
+    needs: setup
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-node@v3
+        with:
+          node-version: [14.x]
+          cache: npm
+      - run: npm install
+      - run: npm lint
+  test:
+    name: Run unit tests
+    runs-on: self-hosted
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-node@v3
+        with:
+          node-version: [14.x]
+          cache: npm
+      - run: npm install
+      - run: npm test
+
